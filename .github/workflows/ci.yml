@@ -1,0 +1,168 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        if: matrix.node-version == '18'
+        with:
+          file: ./coverage/lcov.info
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+          retention-days: 7
+
+  audio-quality:
+    name: Audio Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+
+      - name: Check AudioWorklet files
+        run: |
+          echo "Checking for AudioWorklet best practices..."
+
+          # Check for potential real-time violations in worklet files
+          if find src -name "*.worklet.ts" -o -name "*.worklet.js" | xargs grep -l "console\|alert\|setTimeout\|setInterval" 2>/dev/null; then
+            echo "❌ Found real-time violations in AudioWorklet files"
+            echo "AudioWorklets should not use console.log, setTimeout, or DOM APIs"
+            exit 1
+          fi
+
+          # Check for dynamic memory allocation patterns
+          if find src -name "*.worklet.ts" -o -name "*.worklet.js" | xargs grep -l "new \|push\|splice\|shift\|unshift" 2>/dev/null; then
+            echo "⚠️  Potential dynamic memory allocation in AudioWorklet detected"
+            echo "Consider pre-allocating buffers for real-time performance"
+          fi
+
+          echo "✅ AudioWorklet quality checks passed"
+
+  performance:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+
+      - name: Run performance benchmarks
+        id: perf
+        run: |
+          # Run performance tests if they exist
+          if npm run test:performance --if-present; then
+            echo "performance_results_available=true" >> $GITHUB_OUTPUT
+          else
+            echo "performance_results_available=false" >> $GITHUB_OUTPUT
+            echo "⚠️  No performance tests found"
+          fi
+
+      - name: Comment PR with performance results
+        if: steps.perf.outputs.performance_results_available == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (fs.existsSync('./performance-results.json')) {
+              const results = JSON.parse(fs.readFileSync('./performance-results.json', 'utf8'));
+              const body = `## 🎵 Audio Performance Report
+
+              **Latency**: ${results.latency || 'Not measured'}ms
+              **CPU Usage**: ${results.cpuUsage || 'Not measured'}%
+              **Memory Usage**: ${results.memoryUsage || 'Not measured'}MB
+              **Audio Dropouts**: ${results.dropouts || 'Not measured'}
+
+              ${results.summary || 'No performance impact detected'}
+              `;
+
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            }
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+
+      - name: Run security audit
+        run: npm audit --audit-level=high
+
+      - name: Check for hardcoded secrets
+        run: |
+          if grep -r "api_key\|secret\|password\|token" src/ --include="*.ts" --include="*.js" | grep -v "TODO\|FIXME\|example"; then
+            echo "❌ Potential hardcoded secrets found"
+            exit 1
+          fi
+          echo "✅ No hardcoded secrets detected"

@@ -1,0 +1,35 @@
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# <footer>
+
+# Types:
+# feat:     New feature
+# fix:      Bug fix
+# perf:     Performance improvement
+# refactor: Code refactoring
+# test:     Adding tests
+# docs:     Documentation changes
+# style:    Code style changes (formatting)
+# build:    Build system changes
+# ci:       CI/CD changes
+# chore:    Maintenance tasks
+# audio:    Audio-specific changes (DSP algorithms, worklets)
+
+# Scopes (examples):
+# nodes:    Node system (sources, effects, analyzers, outputs)
+# canvas:   Node editor canvas
+# audio:    Audio engine and Web Audio API
+# worklet:  AudioWorklet implementations
+# script:   Audio scripting engine
+# ui:       User interface components
+# test:     Testing infrastructure
+# build:    Build configuration
+
+# Examples:
+# feat(nodes): add reverb effect node
+# fix(canvas): resolve connection line rendering issue
+# perf(worklet): optimize buffer processing for low latency
+# audio(engine): implement real-time parameter automation
+# test(integration): add node connection flow tests

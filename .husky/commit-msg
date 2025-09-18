@@ -1,0 +1,39 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Check commit message format
+commit_msg_file=$1
+commit_msg=$(cat $commit_msg_file)
+
+# Skip merge commits and revert commits
+if echo "$commit_msg" | grep -qE "^(Merge|Revert)"; then
+    exit 0
+fi
+
+# Check conventional commit format
+if ! echo "$commit_msg" | grep -qE "^(feat|fix|perf|refactor|test|docs|style|build|ci|chore|audio)(\(.+\))?: .{1,50}"; then
+    echo "❌ Invalid commit message format!"
+    echo ""
+    echo "Expected format: <type>(<scope>): <subject>"
+    echo ""
+    echo "Types: feat, fix, perf, refactor, test, docs, style, build, ci, chore, audio"
+    echo "Scope: nodes, canvas, audio, worklet, script, ui, test, build, etc."
+    echo ""
+    echo "Examples:"
+    echo "  feat(nodes): add reverb effect node"
+    echo "  fix(canvas): resolve connection rendering issue"
+    echo "  perf(worklet): optimize buffer processing"
+    echo "  audio(engine): implement parameter automation"
+    echo ""
+    exit 1
+fi
+
+# Check subject line length
+subject_line=$(echo "$commit_msg" | head -n1)
+if [ ${#subject_line} -gt 72 ]; then
+    echo "❌ Commit subject line too long (${#subject_line} chars, max 72)"
+    echo "Current: $subject_line"
+    exit 1
+fi
+
+echo "✅ Commit message format is valid"

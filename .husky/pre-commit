@@ -1,0 +1,40 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# Run linting
+echo "📝 Checking code style..."
+npm run lint || exit 1
+
+# Run TypeScript type checking
+echo "🔧 Checking TypeScript types..."
+npm run typecheck || exit 1
+
+# Run unit tests
+echo "🧪 Running unit tests..."
+npm run test:unit || exit 1
+
+# Check for audio-specific issues
+echo "🎵 Checking audio worklet files..."
+if git diff --cached --name-only | grep -q "\.worklet\.(ts|js)$"; then
+    echo "⚠️  AudioWorklet files detected. Ensure they follow real-time constraints:"
+    echo "   - No dynamic memory allocation in process() method"
+    echo "   - No console.log or DOM access"
+    echo "   - Keep processing lightweight for stable audio"
+fi
+
+# Check for large audio files
+echo "📁 Checking for large files..."
+git diff --cached --name-only | while read file; do
+    if [ -f "$file" ]; then
+        size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || echo 0)
+        if [ $size -gt 10485760 ]; then # 10MB
+            echo "❌ Large file detected: $file ($size bytes)"
+            echo "   Consider using Git LFS for audio files or excluding from repository"
+            exit 1
+        fi
+    fi
+done
+
+echo "✅ Pre-commit checks passed!"

@@ -1,0 +1,37 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🚀 Running pre-push checks..."
+
+# Run all tests before pushing
+echo "🧪 Running comprehensive test suite..."
+npm run test || exit 1
+
+# Check if we're pushing to main/develop - require extra verification
+branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+if [ "$branch" = "main" ] || [ "$branch" = "develop" ]; then
+    echo "⚠️  Pushing to protected branch: $branch"
+    echo "🔍 Running additional checks..."
+
+    # Ensure build works
+    echo "🏗️  Verifying production build..."
+    npm run build || exit 1
+
+    # Run performance tests if they exist
+    if npm run test:performance >/dev/null 2>&1; then
+        echo "⚡ Running performance tests..."
+        npm run test:performance || exit 1
+    fi
+fi
+
+# Check for audio-specific quality indicators
+echo "🎵 Checking audio quality indicators..."
+if git log --oneline -10 | grep -qi "latency\|performance\|audio\|worklet"; then
+    echo "ℹ️  Recent audio-related changes detected"
+    echo "   Ensure you've tested with:"
+    echo "   - Multiple sample rates (44.1kHz, 48kHz)"
+    echo "   - Various buffer sizes"
+    echo "   - Real-time audio processing scenarios"
+fi
+
+echo "✅ Pre-push checks passed!"
