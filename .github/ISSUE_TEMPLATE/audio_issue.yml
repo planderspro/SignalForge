@@ -1,0 +1,128 @@
+name: 🎵 Audio Quality Issue
+description: Report audio quality problems, dropouts, or DSP-related issues
+title: "[Audio]: "
+labels: ["audio", "dsp", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report audio-specific issues like dropouts, quality problems, latency, or DSP algorithm bugs.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-flight Checklist
+      options:
+        - label: I have tested with different audio devices
+          required: false
+        - label: I have tried different sample rates and buffer sizes
+          required: false
+        - label: I have checked browser audio permissions
+          required: true
+
+  - type: dropdown
+    id: audio-issue-type
+    attributes:
+      label: Audio Issue Type
+      options:
+        - Audio dropouts/crackling
+        - High latency
+        - Quality degradation
+        - No audio output
+        - Volume/gain issues
+        - Frequency response problems
+        - DSP algorithm incorrect
+        - Real-time performance
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: audio-description
+    attributes:
+      label: Audio Problem Description
+      description: Detailed description of the audio issue
+      placeholder: Describe exactly what you're hearing (or not hearing)
+    validations:
+      required: true
+
+  - type: textarea
+    id: audio-setup
+    attributes:
+      label: Audio Setup Details
+      value: |
+        **Audio Device**:
+        **Sample Rate**:
+        **Buffer Size**:
+        **Bit Depth**:
+        **Driver Type**: (ASIO, DirectSound, CoreAudio, etc.)
+        **Audio Interface**: (built-in, USB, Thunderbolt, etc.)
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: node-configuration
+    attributes:
+      label: Node Configuration
+      description: Details about the node setup when the issue occurs
+      value: |
+        **Number of Nodes**:
+        **Node Types**:
+        **Connection Pattern**:
+        **Parameter Settings**:
+        **Processing Load**:
+      render: markdown
+
+  - type: textarea
+    id: performance-metrics
+    attributes:
+      label: Performance Metrics
+      description: Performance information (if available)
+      value: |
+        **CPU Usage**:
+        **Memory Usage**:
+        **Audio Thread Usage**:
+        **Glitch Count**:
+        **Measured Latency**:
+      render: markdown
+
+  - type: textarea
+    id: reproduction-audio
+    attributes:
+      label: Audio Reproduction Steps
+      description: Specific steps to reproduce the audio issue
+      placeholder: |
+        1. Load specific audio file or create tone
+        2. Add specific nodes in order
+        3. Set parameters to specific values
+        4. Audio issue manifests when...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: tested-conditions
+    attributes:
+      label: Tested Conditions
+      description: What have you tested?
+      options:
+        - label: Different sample rates (44.1kHz, 48kHz, 96kHz)
+        - label: Different buffer sizes (64, 128, 256, 512, 1024 samples)
+        - label: Different audio devices
+        - label: Different browsers
+        - label: Simplified node setup
+        - label: Audio with/without external sources
+
+  - type: textarea
+    id: expected-audio
+    attributes:
+      label: Expected Audio Behavior
+      description: What should the audio sound like?
+      placeholder: Describe the expected audio output
+
+  - type: textarea
+    id: audio-files
+    attributes:
+      label: Audio Files or Examples
+      description: Links to audio files, recordings, or examples that demonstrate the issue
+      placeholder: Upload or link to audio examples

@@ -1,0 +1,120 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for SignalForge
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please provide as much detail as possible to help us understand your request.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-flight Checklist
+      description: Please verify the following before submitting
+      options:
+        - label: I have searched existing issues and this feature hasn't been requested
+          required: true
+        - label: This feature aligns with SignalForge's goals
+          required: true
+
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: Feature Category
+      description: What area does this feature relate to?
+      options:
+        - Audio Nodes (new effects, sources, analyzers)
+        - Node Editor (UI/UX improvements)
+        - Scripting Engine (language features, APIs)
+        - External Integrations (streaming services, formats)
+        - Performance Optimization
+        - Developer Tools
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: Describe the use case or problem this feature would address
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed solution
+      placeholder: How would you like this feature to work?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions?
+      placeholder: What other approaches have you considered?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature?
+      options:
+        - Low (nice to have)
+        - Medium (would improve workflow)
+        - High (essential for my use case)
+        - Critical (blocking my project)
+    validations:
+      required: true
+
+  - type: textarea
+    id: audio-requirements
+    attributes:
+      label: Audio-Specific Requirements
+      description: Any specific audio/DSP requirements
+      value: |
+        **Real-time Processing**:
+        **Latency Requirements**:
+        **CPU Constraints**:
+        **Quality Requirements**:
+        **Compatibility Needs**:
+      render: markdown
+
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: Technical Implementation Notes
+      description: Any technical considerations or suggestions
+      placeholder: Implementation details, algorithms, APIs, etc.
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples or References
+      description: Examples from other software, research papers, or references
+      placeholder: Links to similar implementations, academic papers, etc.
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups or Wireframes
+      description: Visual representation of the feature (if applicable)
+      placeholder: Upload images or provide links to mockups
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Are you willing to help implement this feature?
+      options:
+        - label: I'm willing to submit a PR for this feature
+        - label: I can help with testing
+        - label: I can provide technical guidance
+        - label: I can help with documentation

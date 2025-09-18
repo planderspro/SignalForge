@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussion
+    url: https://github.com/planderspro/SignalForge/discussions
+    about: General questions, feature discussions, and community chat
+  - name: 📚 Documentation
+    url: https://github.com/planderspro/SignalForge/wiki
+    about: Check the documentation and guides
+  - name: 🔒 Security Issue
+    url: https://github.com/planderspro/SignalForge/security/advisories/new
+    about: Report a security vulnerability privately

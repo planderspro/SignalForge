@@ -1,0 +1,126 @@
+name: 🐛 Bug Report
+description: Report a bug or issue with SignalForge
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us diagnose and fix the issue.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-flight Checklist
+      description: Please verify the following before submitting
+      options:
+        - label: I have searched existing issues and this is not a duplicate
+          required: true
+        - label: I have reproduced this issue with the latest version
+          required: true
+        - label: I have provided all relevant information below
+          required: true
+
+  - type: dropdown
+    id: bug-type
+    attributes:
+      label: Bug Type
+      description: What type of bug is this?
+      options:
+        - Audio Processing (dropouts, latency, quality)
+        - Node Editor (connections, placement, properties)
+        - External Sources (YouTube, file loading, microphone)
+        - Scripting Engine (custom nodes, compilation)
+        - Performance (CPU, memory, responsiveness)
+        - UI/UX (interface, controls, visualization)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of the bug
+      placeholder: Describe what happened and what you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to reproduce the bug
+      placeholder: |
+        1. Create a new project
+        2. Add a filter node
+        3. Connect it to output
+        4. Adjust frequency parameter
+        5. Audio cuts out
+    validations:
+      required: true
+
+  - type: textarea
+    id: audio-config
+    attributes:
+      label: Audio Configuration
+      description: Your audio setup details
+      value: |
+        **Sample Rate**:
+        **Buffer Size**:
+        **Audio Device**:
+        **Latency**:
+        **Number of Nodes**:
+      render: markdown
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser are you using?
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser Version
+      description: What version of the browser?
+      placeholder: e.g., Chrome 118.0.5993.88
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating System
+      description: What OS are you running?
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS Sonoma
+        - macOS Ventura
+        - macOS Monterey
+        - Ubuntu 22.04
+        - Ubuntu 20.04
+        - Other Linux
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: console-errors
+    attributes:
+      label: Console Errors
+      description: Any errors in browser console (F12)
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other context about the problem (screenshots, audio files, project files, etc.)
