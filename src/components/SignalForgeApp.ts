@@ -152,9 +152,9 @@ export class SignalForgeApp extends LitElement {
         </div>
       </div>
 
-      <div class="main-content">
+      <main class="main-content">
         ${this.currentView === 'welcome' || !this.audioContextReady ? this.renderWelcomeScreen() : this.renderNodeEditor()}
-      </div>
+      </main>
     `
   }
 
