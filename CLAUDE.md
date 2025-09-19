@@ -135,3 +135,5 @@ The project utilizes specialized development agents for different aspects:
 
 This project represents a significant undertaking requiring expertise in web audio, real-time processing, user interface design, and security. The modular architecture and specialized development approach ensure scalable, maintainable code that can grow with user needs.
 - Always use the git engineer for anything git related. He should be able to use the github cli to manage the repository on github.com
+- always use your agents
+- do not impliment bandaid fixes.

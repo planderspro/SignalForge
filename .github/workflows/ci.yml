@@ -37,14 +37,8 @@ jobs:
       - name: Run unit tests
         run: npm run test:unit
 
-      - name: Run integration tests
-        run: npm run test:integration
-
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
-        if: matrix.node-version == '18'
-        with:
-          file: ./coverage/lcov.info
+      - name: Run E2E tests
+        run: npm run test:e2e
 
   build:
     name: Build

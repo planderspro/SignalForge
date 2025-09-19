@@ -11,7 +11,18 @@
       "Bash(chmod:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(gh repo create:*)",
+      "Bash(gh repo edit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "Bash(gh label create:*)",
+      "Bash(gh repo view:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run test:unit:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run test:coverage:*)"
     ],
     "deny": [],
     "ask": []

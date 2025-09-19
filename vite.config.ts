@@ -33,5 +33,23 @@ export default defineConfig({
   assetsInclude: ['**/*.worklet.js'],
   worker: {
     format: 'es'
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    include: ['src/**/*.{test,spec}.{js,ts}'],
+    exclude: ['tests/e2e/**/*', 'node_modules/**/*'],
+    coverage: {
+      reporter: ['text', 'lcov', 'html'],
+      exclude: [
+        'node_modules/',
+        'dist/',
+        'tests/',
+        '**/*.config.*',
+        '**/*.worklet.js',
+        'scripts/',
+        'public/'
+      ]
+    }
   }
 })

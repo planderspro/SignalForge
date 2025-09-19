@@ -9,8 +9,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:unit": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -20,9 +21,11 @@
     "@playwright/test": "^1.40.0",
     "@types/node": "^24.5.2",
     "@types/web": "^0.0.133",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.45.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitest/coverage-v8": "^1.0.4",
+    "eslint": "^8.57.0",
+    "jsdom": "^23.0.1",
     "typescript": "^5.0.2",
     "vite": "^5.0.8",
     "vitest": "^1.0.4"
